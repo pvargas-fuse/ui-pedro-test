@@ -1,11 +1,12 @@
 name: Run Node script
 
 on:
-  push:
-    branches:
-      - '**'
   pull_request:
-  workflow_dispatch:
+    branches: [main]
+    types:
+      - opened
+      - edited
+      - synchronize
 
 jobs:
   run-node:
