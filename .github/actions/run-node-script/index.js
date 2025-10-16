@@ -4,5 +4,5 @@ console.log('Hello, world!', {
   raw: body,
   body: body
     .replace(/\uFEFF/g, '') // BOM
-    .replace(/\r\n?/g, '\n'), // CRLF -> LF
+    .replace(/\\r(\\n)?/g, '\n'), // CRLF -> LF
 });
