@@ -1,9 +1,8 @@
-import cn from 'classnames';
-import type { FC } from 'react';
-
 import { hasRenderableContent } from './Hero.utils';
 import { useHero } from './Hero.hooks';
+import cn from 'classnames';
 import styles from './Hero.module.scss';
+import type { FC } from 'react';
 import type { HeroProps } from './Hero.types';
 
 export const Hero: FC<HeroProps> = (props) => {
@@ -19,19 +18,22 @@ export const Hero: FC<HeroProps> = (props) => {
     ...rest
   } = props;
 
-  const showHeader =
-    hasRenderableContent(title) || hasRenderableContent(subtitle);
+  const { handlePrimaryAction, handleSecondaryAction } = useHero({
+    onPrimaryAction,
+    onSecondaryAction,
+  });
+
   const showActions =
     Boolean(primaryActionLabel) || Boolean(secondaryActionLabel);
 
-  const testId = 'hero';
-  const headerTestId = `${testId}.header`;
+  const testId = rest.testId || 'hero';
+  const headerTestId = `${testId}-header`;
   const mainTestId = `${testId}.main`;
-  const actionsTestId = `${testId}.actions`;
+  const actionsTestId = `${testId} actions`;
 
   return (
     <div data-testid={testId} className={cn(styles.root, className)} {...rest}>
-      {showHeader && (
+      {(hasRenderableContent(title) || hasRenderableContent(subtitle)) && (
         <header className={styles.header} data-testid={headerTestId}>
           {hasRenderableContent(title) && (
             <h1 className={styles.title}>{title}</h1>
@@ -43,17 +45,23 @@ export const Hero: FC<HeroProps> = (props) => {
       )}
 
       <main className={styles.main} data-testid={mainTestId}>
-        <div>{children}</div>
+        {children}
       </main>
 
       {showActions && (
         <div className={styles.actions} data-testid={actionsTestId}>
-          {secondaryActionLabel && (
-            <button type="button">{secondaryActionLabel}</button>
-          )}
-          {primaryActionLabel && (
-            <button type="button">{primaryActionLabel}</button>
-          )}
+          <div>
+            {secondaryActionLabel && (
+              <button type="button" onClick={handleSecondaryAction}>
+                {secondaryActionLabel}
+              </button>
+            )}
+            {primaryActionLabel && (
+              <button type="button" onClick={handlePrimaryAction}>
+                {primaryActionLabel}
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
