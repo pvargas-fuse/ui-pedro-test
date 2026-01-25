@@ -12,12 +12,23 @@ jobs:
   run-node:
     name: Run index.js
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Node script via composite action
-        uses: ./.github/actions/run-node-script
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          script: 'index.js'
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+          scope: '@pvargas-fuse'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Node script
+        run: node .github/actions/run-node-script/index.js
