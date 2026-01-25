@@ -1,0 +1,9 @@
+name: 'Run Node Script'
+description: 'Setup Node, install dependencies if needed, and run a Node script'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run Node script
+      run: npm i && node "${{ github.action_path }}/index.js"
+      shell: bash
