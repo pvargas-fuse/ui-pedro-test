@@ -1,0 +1,23 @@
+name: Run Node script
+
+on:
+  pull_request:
+    branches: [main]
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  run-node:
+    name: Run index.js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Node script via composite action
+        uses: ./.github/actions/run-node-script
+        with:
+          node-version: '20'
+          script: 'index.js'
