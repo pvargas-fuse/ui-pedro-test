@@ -5,5 +5,5 @@ runs:
   using: 'composite'
   steps:
     - name: Run Node script
-      run: node "${{ github.action_path }}/index.js"
+      run: npm i && node "${{ github.action_path }}/index.js"
       shell: bash
